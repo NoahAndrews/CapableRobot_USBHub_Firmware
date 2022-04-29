@@ -1,10 +1,17 @@
 import time
 
+try:
+    from typing import Union
+except ImportError:
+    # CircuitPython does not provide the typing module
+    pass
+
 import digitalio
-import analogio
 import board
 import busio
 import supervisor
+
+import adafruit_vl53l0x
 
 import capablerobot_usbhub
 import capablerobot_tlc59116
@@ -23,6 +30,8 @@ led3.switch_to_output(value=True)
 BEAT = 0.05
 LED_BRIGHT = 80
 
+DISTANCE_READ_INTERVAL_S = 1
+
 def stdout(*args):
     if supervisor.runtime.serial_connected:
         print(*args)
@@ -31,6 +40,29 @@ stdout("... booted ...")
 
 i2c1 = busio.I2C(board.SCL,  board.SDA)
 i2c2 = busio.I2C(board.SCL2, board.SDA2)
+
+
+def initialize_distance_sensor():
+    global distance_sensor
+    global distance_last_time
+    global distance_failures
+    global distance_failure_blink_state
+
+    try:
+        distance_sensor = adafruit_vl53l0x.VL53L0X(i2c2, io_timeout_s=1)
+        distance_last_time = 0
+        distance_failures = 0
+        distance_failure_blink_state = True
+    except:
+        stdout('Failed to initialize distance sensor')
+
+
+distance_sensor = None  # type: Union[adafruit_vl53l0x.VL53L0X, None]
+distance_cm = 0
+distance_last_time = 0
+distance_failures = 0
+distance_failure_blink_state = True
+initialize_distance_sensor()
 
 stdout("... configuring hub ...")
 usb = capablerobot_usbhub.USBHub(i2c1, i2c2)
@@ -52,7 +84,7 @@ upstream_last_time = boot_time
 
 def reset():
     global upstream_state, upstream_last_time
-    
+
     usb.reset()
     usb.configure()
     usb.set_mcp_config()
@@ -69,8 +101,19 @@ def reset():
     usb.set_last_poll_time(time.monotonic())
 
 while True:
+    if time.monotonic() > distance_last_time + DISTANCE_READ_INTERVAL_S:
+        try:
+            distance_cm = int(round(distance_sensor.range / 10))
+            stdout('Distance: {}cm'.format(distance_cm))
+            distance_last_time = time.monotonic()
+        except:
+            distance_failures += 1
+            if distance_failures == 3 or distance_failures % 10 == 0:
+                stdout('Re-initializing distance sensor')
+                initialize_distance_sensor()
+
     time.sleep(usb.config["loop_delay"])
-    
+
     ## Look for data from the Host computer via special USB4715 registers
     try:
         usb.poll_for_host_comms()
@@ -78,7 +121,7 @@ while True:
         stdout(time.monotonic(), "--- RESET due to loop delay ---")
         reset()
         continue
-        
+
     ## Internal heartbeat LED
     led3.value = not led3.value
 
@@ -88,7 +131,7 @@ while True:
         else:
             led_data.aux(250, update=False)
     elif led3.value:
-        ## If the configuration was changed while the LED is on, 
+        ## If the configuration was changed while the LED is on,
         ## we still need to turn it off when the next update happens.
         led_data.aux(0, update=False)
 
@@ -114,13 +157,21 @@ while True:
 
         if idx == 0:
             if speed == 0b00:
-                ## If the upstream port is disconnected, light the 
+                ## If the upstream port is disconnected, light the
                 ## LED red and record that the link is down
                 color = (LED_BRIGHT,0,0)
                 upstream_state = 'down'
             else:
                 upstream_last_time = time.monotonic()
                 upstream_state = 'up'
+
+            if distance_failures > 0:
+                if distance_failures % 10 == 0:
+                    distance_failure_blink_state = not distance_failure_blink_state
+
+                if distance_failure_blink_state:
+                    # Set the LED to yellow
+                    color = (LED_BRIGHT - 20, LED_BRIGHT, 0)
 
         led_data.rgb(idx, color, update=False)
 
