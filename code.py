@@ -52,6 +52,8 @@ def initialize_distance_sensor():
 
     try:
         distance_sensor = adafruit_vl53l0x.VL53L0X(i2c2, io_timeout_s=1)
+        distance_sensor.start_continuous()
+        distance_sensor.measurement_timing_budget = 200000
         distance_last_time = 0
         distance_failures = 0
         distance_failure_blink_state = True
@@ -59,11 +61,16 @@ def initialize_distance_sensor():
         stdout("Failed to initialize distance sensor")
 
 
+DESK_RAISED = "raised"
+DESK_LOWERED = "lowered"
+DESK_UNKNOWN = "unknown"
+
 distance_sensor = None  # type: Union[adafruit_vl53l0x.VL53L0X, None]
-distance_cm = 0
+distance_mm = 0
 distance_last_time = 0
 distance_failures = 0
 distance_failure_blink_state = True
+desk_state = DESK_UNKNOWN
 initialize_distance_sensor()
 
 stdout("... configuring hub ...")
@@ -106,9 +113,22 @@ def reset():
 while True:
     if time.monotonic() > distance_last_time + DISTANCE_READ_INTERVAL_S:
         try:
-            distance_cm = int(round(distance_sensor.range / 10))
-            stdout("Distance: {}cm".format(distance_cm))
+            prev_distance = distance_mm
+            prev_desk_state = desk_state
+            distance_mm = int(round(distance_sensor.range))
             distance_last_time = time.monotonic()
+            if 80 <= distance_mm <= 90:
+                desk_state = DESK_LOWERED
+            elif 160 <= distance_mm <= 190:
+                desk_state = DESK_RAISED
+            else:
+                desk_state = DESK_UNKNOWN
+
+            if prev_desk_state is not desk_state:
+                stdout("Desk state: {}".format(desk_state))
+
+            if desk_state == DESK_UNKNOWN and distance_mm != prev_distance:
+                stdout("Distance: {}mm".format(distance_mm))
         except:
             distance_failures += 1
             if distance_failures == 3 or distance_failures % 10 == 0:
@@ -172,8 +192,11 @@ while True:
                     distance_failure_blink_state = not distance_failure_blink_state
 
                 if distance_failure_blink_state:
-                    # Set the LED to yellow
+                    # Set the LED color to yellow
                     color = (LED_BRIGHT - 20, LED_BRIGHT, 0)
+            elif desk_state == DESK_UNKNOWN:
+                # Set the LED color to blue
+                color = (0, 0, LED_BRIGHT)
 
         led_data.rgb(idx, color, update=False)
 
