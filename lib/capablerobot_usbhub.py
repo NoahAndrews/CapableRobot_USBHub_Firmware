@@ -36,61 +36,61 @@ import capablerobot_eeprom
 import capablerobot_ucs2113
 
 # pylint: disable=bad-whitespace
-__version__     = const(0x02)
+__version__ = const(0x02)
 
-_I2C_ADDR_USB   = const(0x2D)
-_REVISION       = const(0x0000)
-_RMT_IDENT      = const(0x0904)
-_RMT_READ       = const(0x0914)
-_RMT_WRITE      = const(0x0924)
-_VENDOR_ID      = const(0x3000)
-_PRODUCT_ID     = const(0x3002)
-_DEVICE_ID      = const(0x3004)
-_HUB_CONFIG_1   = const(0x3006)
-_HUB_CONFIG_2   = const(0x3007)
-_HUB_CONFIG_3   = const(0x3008)
-_PORT_SWAP      = const(0x30FA)
-_HUB_CTRL       = const(0x3104)
-_SUSPEND        = const(0x3197)
-_POWER_STATUS   = const(0x30E5)
-_REMAP_12       = const(0x30FB)
-_REMAP_34       = const(0x30FC)
-_POWER_STATE    = const(0x3100)
-_CONNECTION     = const(0x3194)
-_DEVICE_SPEED   = const(0x3195)
+_I2C_ADDR_USB = const(0x2D)
+_REVISION = const(0x0000)
+_RMT_IDENT = const(0x0904)
+_RMT_READ = const(0x0914)
+_RMT_WRITE = const(0x0924)
+_VENDOR_ID = const(0x3000)
+_PRODUCT_ID = const(0x3002)
+_DEVICE_ID = const(0x3004)
+_HUB_CONFIG_1 = const(0x3006)
+_HUB_CONFIG_2 = const(0x3007)
+_HUB_CONFIG_3 = const(0x3008)
+_PORT_SWAP = const(0x30FA)
+_HUB_CTRL = const(0x3104)
+_SUSPEND = const(0x3197)
+_POWER_STATUS = const(0x30E5)
+_REMAP_12 = const(0x30FB)
+_REMAP_34 = const(0x30FC)
+_POWER_STATE = const(0x3100)
+_CONNECTION = const(0x3194)
+_DEVICE_SPEED = const(0x3195)
 _POWER_SELECT_1 = const(0x3C00)
 _POWER_SELECT_2 = const(0x3C04)
 _POWER_SELECT_3 = const(0x3C08)
 _POWER_SELECT_4 = const(0x3C0C)
-_CHARGE_CONFIG  = const(0x343C)
+_CHARGE_CONFIG = const(0x343C)
 
 
 ## Registers here are under BFD2 base address
-_MANUF_DESC       = const(0x3204)
-_PRODUCT_DESC     = const(0x3244)
-_MANUF_DESC_LEN   = const(0x346A)
+_MANUF_DESC = const(0x3204)
+_PRODUCT_DESC = const(0x3244)
+_MANUF_DESC_LEN = const(0x346A)
 _PRODUCT_DESC_LEN = const(0x3472)
 
-_MANUF_STRING   = "Capable Robot Components"
-  
-_CFG_REG_CMD      = bytearray([0x99, 0x37, 0x00])
-_DEFAULT_PORT_MAP = [1, 2, 3, 4]
-_CUSTOM_PORT_MAP  = [2, 4, 1, 3]
+_MANUF_STRING = "Capable Robot Components"
 
-_I2C_ADDR_MCP   = const(0x20)
-_GPIO           = const(0x09)
+_CFG_REG_CMD = bytearray([0x99, 0x37, 0x00])
+_DEFAULT_PORT_MAP = [1, 2, 3, 4]
+_CUSTOM_PORT_MAP = [2, 4, 1, 3]
+
+_I2C_ADDR_MCP = const(0x20)
+_GPIO = const(0x09)
 
 _CRC8_POLYNOMIAL = const(0x31)
-_CRC8_INIT       = const(0xFF)
+_CRC8_INIT = const(0xFF)
 
-_CMD_NOOP   = const(0b000)
-_CMD_GET    = const(0b001)
-_CMD_SET    = const(0b010)
-_CMD_SAVE   = const(0b100)
-_CMD_RESET  = const(0b111)
+_CMD_NOOP = const(0b000)
+_CMD_GET = const(0b001)
+_CMD_SET = const(0b010)
+_CMD_SAVE = const(0b100)
+_CMD_RESET = const(0b111)
 
-_CMD_RESET_USB        = const(0x00)
-_CMD_RESET_MCU        = const(0x01)
+_CMD_RESET_USB = const(0x00)
+_CMD_RESET_MCU = const(0x01)
 _CMD_RESET_BOOTLOADER = const(0x02)
 
 ## Floats are transmitted and persisted as integers with the following
@@ -100,62 +100,65 @@ _FLOAT_SCALE = 100
 _FLOAT_KEYS = ["loop_delay"]
 _STRING_KEYS = ["descriptor_custom"]
 
-_CFG_DATA_STATE         = const(0x05)
+_CFG_DATA_STATE = const(0x05)
 # _CFG_POWER_ERRORS       = const(0x06)
-_CFG_POWER_LIMITS       = const(0x07)
-_CFG_POWER_MEASURE_12   = const(0x08)
-_CFG_POWER_MEASURE_34   = const(0x09)
+_CFG_POWER_LIMITS = const(0x07)
+_CFG_POWER_MEASURE_12 = const(0x08)
+_CFG_POWER_MEASURE_34 = const(0x09)
 
-_CFG_HIGHSPEED_DISABLE  = const(0x10)
-_CFG_LOOP_DELAY         = const(0x11)
+_CFG_HIGHSPEED_DISABLE = const(0x10)
+_CFG_LOOP_DELAY = const(0x11)
 _CFG_EXTERNAL_HEARTBEAT = const(0x12)
-_CFG_RESET_ON_DELAY     = const(0x13)
+_CFG_RESET_ON_DELAY = const(0x13)
 _CFG_RESET_ON_LINK_LOSS = const(0x14)
-_CFG_LINK_LOSS_DELAY    = const(0x15)
-_CFG_DESCRIPTOR_CONFIG  = const(0x16)
-_CFG_DESCRIPTOR_CUSTOM  = const(0x17)
+_CFG_LINK_LOSS_DELAY = const(0x15)
+_CFG_DESCRIPTOR_CONFIG = const(0x16)
+_CFG_DESCRIPTOR_CUSTOM = const(0x17)
 
 _DESCRIPTOR_MPN_REV_SERIAL = const(0x00)
-_DESCRIPTOR_MPN_REV        = const(0x01)
-_DESCRIPTOR_CUSTOM         = const(0x02)
+_DESCRIPTOR_MPN_REV = const(0x01)
+_DESCRIPTOR_CUSTOM = const(0x02)
 
 _PCBREV_VALUES = [None, None, 32767]
 _PCBREV_TOLERANCE = 1000
 
 # pylint: enable=bad-whitespace
 
+
 def stdout(*args):
     if supervisor.runtime.serial_connected:
         print("   ", *args)
 
+
 def _process_find_key(name):
     if name == _CFG_HIGHSPEED_DISABLE:
         return "highspeed_disable"
-    
+
     if name == _CFG_LOOP_DELAY:
         return "loop_delay"
-    
+
     if name == _CFG_EXTERNAL_HEARTBEAT:
-        return "external_heartbeat" 
+        return "external_heartbeat"
 
     if name == _CFG_RESET_ON_DELAY:
-        return "reset_on_delay" 
+        return "reset_on_delay"
 
     ## Flag to set of the Hub will reset the USB4715 if a upstream link loss is detected
     if name == _CFG_RESET_ON_LINK_LOSS:
-        return "reset_on_link_loss" 
+        return "reset_on_link_loss"
 
     ## Seconds that upstream link can be down before resetting the hub
     if name == _CFG_LINK_LOSS_DELAY:
-        return "link_loss_delay" 
+        return "link_loss_delay"
 
     if name == _CFG_DESCRIPTOR_CONFIG:
         return "descriptor_config"
 
     if name == _CFG_DESCRIPTOR_CUSTOM:
         return "descriptor_custom"
-    
+
     return None
+
 
 def _register_length(addr):
     if addr in [_REVISION, _RMT_IDENT, _RMT_READ, _RMT_WRITE]:
@@ -166,11 +169,13 @@ def _register_length(addr):
 
     return 1
 
+
 def _register_base_address_lsb(addr):
     if addr in [_MANUF_DESC, _PRODUCT_DESC, _MANUF_DESC_LEN, _PRODUCT_DESC_LEN]:
         return 0xD2
 
     return 0x80
+
 
 def _generate_crc(data):
     crc = _CRC8_INIT
@@ -185,32 +190,36 @@ def _generate_crc(data):
 
     return crc & 0xFF
 
-def _string_to_utf16le(string):
-    out = bytearray(len(string)*2)
 
-    for idx,c in enumerate(string):
-        out[idx*2] = ord(c)
+def _string_to_utf16le(string):
+    out = bytearray(len(string) * 2)
+
+    for idx, c in enumerate(string):
+        out[idx * 2] = ord(c)
 
     return list(out)
+
 
 def _utf16le_to_string(data):
     out = ""
 
-    for idx in range(len(data)/2):
-        out += chr(data[idx*2])
+    for idx in range(len(data) / 2):
+        out += chr(data[idx * 2])
 
     return out
+
 
 def _bytearry_to_bcd(b):
     bcd = list(b)
     return "{:02x}.{:02x}".format(bcd[1], bcd[0])
+
 
 def _bytearry_to_int(b, lsb_first=True):
     if lsb_first:
         x = 0
         shift = 0
         for char in b:
-            x |= (char << shift*8)
+            x |= char << shift * 8
             shift += 1
     else:
         x = 0
@@ -219,14 +228,18 @@ def _bytearry_to_int(b, lsb_first=True):
             x |= char
     return x
 
+
 def set_bit(value, bit):
-    return value | (1<<bit)
+    return value | (1 << bit)
+
 
 def clear_bit(value, bit):
-    return value & ~(1<<bit)
+    return value & ~(1 << bit)
+
 
 def get_bit(value, bit):
-    return (value & (1<<bit)) > 0 
+    return (value & (1 << bit)) > 0
+
 
 class USBHub:
 
@@ -249,7 +262,9 @@ class USBHub:
             self.pin_bcen = digitalio.DigitalInOut(board.USBBCEN)
             self.pin_bcen.switch_to_output(value=False)
         except AttributeError:
-            stdout("WARN : Firmware does not define pin for battery charge configuration")
+            stdout(
+                "WARN : Firmware does not define pin for battery charge configuration"
+            )
             self.pin_bcen = None
 
         self.vlim = analogio.AnalogIn(board.ANVLIM)
@@ -257,20 +272,20 @@ class USBHub:
 
         self.i2c_device = I2CDevice(i2c2_bus, _I2C_ADDR_USB, probe=False)
         self.mcp_device = I2CDevice(i2c1_bus, _I2C_ADDR_MCP, probe=False)
-        self.eeprom = capablerobot_eeprom.EEPROM(i2c1_bus, '24AA025E48')
+        self.eeprom = capablerobot_eeprom.EEPROM(i2c1_bus, "24AA025E48")
         self.ucs = capablerobot_ucs2113.Ports(i2c1_bus)
 
         ## Load default configuration and then check filesystem for INI file to update it
         self.config = dict(
-            highspeed_disable = False,
-            loop_delay = 0.1,
-            external_heartbeat = False, 
-            force = False,
-            reset_on_delay = False,
-            reset_on_link_loss = True,
-            link_loss_delay = 30,
-            descriptor_config = _DESCRIPTOR_MPN_REV_SERIAL,
-            descriptor_custom = ''
+            highspeed_disable=False,
+            loop_delay=0.1,
+            external_heartbeat=False,
+            force=False,
+            reset_on_delay=False,
+            reset_on_link_loss=True,
+            link_loss_delay=30,
+            descriptor_config=_DESCRIPTOR_MPN_REV_SERIAL,
+            descriptor_custom="",
         )
         self._update_config_from_ini()
 
@@ -282,7 +297,7 @@ class USBHub:
         ## has been previously configured.  If so, we don't need to reset
         ## it or configure it and can just control it as-is.
         ##
-        ## If the hub has not been configured (e.g. when the board is first 
+        ## If the hub has not been configured (e.g. when the board is first
         ## powered on), this call will raise an OSError.  That will then trigger
         ## the normal reset & configure process.
         try:
@@ -292,7 +307,7 @@ class USBHub:
             self.remap = _DEFAULT_PORT_MAP
             stdout("Hub IC is in default state")
 
-        if self.remap == _DEFAULT_PORT_MAP or force or self.config['force']:
+        if self.remap == _DEFAULT_PORT_MAP or force or self.config["force"]:
             stdout("Resetting and configuring Hub IC")
             self.reset()
             self.configure()
@@ -308,22 +323,24 @@ class USBHub:
         ## 2 bytes for 'write' and count
         ## 4 bytes for address (base + offset)
         ## num bytes actually get written
-        length = 2+4+len(xbytes)
+        length = 2 + 4 + len(xbytes)
 
         ## Prepare the pre-amble
         out = [
             0x00,
             0x00,
-            length, # Length of rest of packet
-            0x00,   # Write configuration register
-            len(xbytes) & 0xFF, # Will be writing N bytes (later)
-            0xBF, _register_base_address_lsb(address),
-            (address >> 8) & 0xFF, address & 0xFF
+            length,  # Length of rest of packet
+            0x00,  # Write configuration register
+            len(xbytes) & 0xFF,  # Will be writing N bytes (later)
+            0xBF,
+            _register_base_address_lsb(address),
+            (address >> 8) & 0xFF,
+            address & 0xFF,
         ]
 
         with self.i2c_device as i2c:
             ## Write the pre-amble and then the payload
-            i2c.write(bytearray(out+xbytes))
+            i2c.write(bytearray(out + xbytes))
 
             ## Execute the Configuration Register Access command
             i2c.write(_CFG_REG_CMD)
@@ -336,14 +353,16 @@ class USBHub:
         out = [
             0x00,
             0x00,
-            0x06, # Length of rest of packet
-            0x01, # Read configuration register
-            length & 0xFF, # Will be reading N bytes (later)
-            0xBF, _register_base_address_lsb(address),
-            (address >> 8) & 0xFF, address & 0xFF
+            0x06,  # Length of rest of packet
+            0x01,  # Read configuration register
+            length & 0xFF,  # Will be reading N bytes (later)
+            0xBF,
+            _register_base_address_lsb(address),
+            (address >> 8) & 0xFF,
+            address & 0xFF,
         ]
 
-        inbuf = bytearray(length+1)
+        inbuf = bytearray(length + 1)
 
         with self.i2c_device as i2c:
             ## Write the pre-amble
@@ -357,7 +376,7 @@ class USBHub:
 
         ## First byte is the length of the rest of the message.
         ## We don't want to return that to the caller
-        return inbuf[1:length+1]
+        return inbuf[1 : length + 1]
 
     # pylint: disable=invalid-name
     @property
@@ -377,8 +396,8 @@ class USBHub:
         return _bytearry_to_int(self._read_register(_PRODUCT_ID))
 
     ## bcdDevice is R/W during CFG_SOC, but is written to during
-    ## the CFG_OTP stage of the boot process, meaning that any 
-    ## writes to this register prior to attach will be lost.  
+    ## the CFG_OTP stage of the boot process, meaning that any
+    ## writes to this register prior to attach will be lost.
     @property
     def device_id(self):
         return _bytearry_to_bcd(self._read_register(_DEVICE_ID))
@@ -398,12 +417,15 @@ class USBHub:
 
                 pin_rev = analogio.AnalogIn(board.PCBREV)
                 values = [pin_rev.value for _ in range(10)]
-                
+
                 for idx, target in enumerate(_PCBREV_VALUES):
                     if target is None:
                         continue
 
-                    if min(values) > target - _PCBREV_TOLERANCE and max(values) < target + _PCBREV_TOLERANCE:
+                    if (
+                        min(values) > target - _PCBREV_TOLERANCE
+                        and max(values) < target + _PCBREV_TOLERANCE
+                    ):
                         # stdout("PCBREV pin reads {} to {}, REV is {}".format(min(values), max(values), idx))
                         self._pcb_revision = idx
 
@@ -426,15 +448,15 @@ class USBHub:
         conn = _bytearry_to_int(self._read_register(_CONNECTION))
         speed = _bytearry_to_int(self._read_register(_DEVICE_SPEED))
 
-        out = [0]*5
+        out = [0] * 5
 
         ## Have to follow logical to physical remapping
         for idx, port in enumerate(self.remap):
-            out[port] = (speed >> (idx*2)) & 0b11
+            out[port] = (speed >> (idx * 2)) & 0b11
 
         ## Upstream port is not in the speed register, so take data from
         ## the connection register.  Unfortunately, no way to know speed.
-        out[0] = (conn & 0b1)*3
+        out[0] = (conn & 0b1) * 3
 
         return out
 
@@ -446,13 +468,13 @@ class USBHub:
         with self.i2c_device as i2c:
             i2c.write(bytearray(out))
 
-    def reset(self):       
+    def reset(self):
         time.sleep(0.05)
 
         if self.pin_bcen is not None:
             # Turn on 10 ohm resistor for charge strapping
             self.pin_bcen.value = True
-        
+
         # Put in reset for at least 10 ms
         self.pin_rst.value = False
         time.sleep(0.05)
@@ -468,7 +490,7 @@ class USBHub:
             self.pin_bcen.value = False
 
     def configure(self, **opts):
-        
+
         highspeed_disable = False
 
         if "highspeed_disable" in self.config.keys():
@@ -476,7 +498,7 @@ class USBHub:
 
         if "highspeed_disable" in opts.keys():
             highspeed_disable = opts["highspeed_disable"]
-        
+
         self.set_hub_config_1(highspeed_disable=highspeed_disable, multitt_enable=True)
 
         ## Reverse DP/DM pints of upstream port and ports 3 & 4
@@ -488,41 +510,40 @@ class USBHub:
         self.set_port_remap(ports=_CUSTOM_PORT_MAP)
 
         self.set_charging_config()
-        
+
         self.set_hub_descriptors()
 
         self.attach()
 
         ## Sleep here is needed to allow the I2C2 bus to resume normal state.
         ## If communications are attempted immediately, the MCU will see a low SCL pin.
-        ## 
-        ## After reporting this unexpected behavior to Microchip, they recommended increasing 
+        ##
+        ## After reporting this unexpected behavior to Microchip, they recommended increasing
         ## the delay (prior to starting I2C traffic) to 100 ms.  This guarantees the controller
         ## inside the USB4715 to completes internal processes and will not hang the I2C bus.
         time.sleep(0.1)
 
-        ## Set the device id (available via the bcdDevice USB descriptor) to "C.REV" where REV 
+        ## Set the device id (available via the bcdDevice USB descriptor) to "C.REV" where REV
         ## is pulled from the Hub's EEPROM.  This allows the host-side driver to determine the
         ## Hub hardware revision, which is need for some monitoring functions and operations.
         self.set_device_id()
-
 
     def upstream(self, state):
         self.pin_hen.value = not state
 
     def _update_config_from_ini(self):
 
-        ## If the INI file does not exist, the 'open' will 
+        ## If the INI file does not exist, the 'open' will
         ## raise an OSError, so we catch that here.
         try:
-            with open("/config.ini", 'r') as f:
+            with open("/config.ini", "r") as f:
                 stdout("Loading config.ini from filesystem")
 
                 line = f.readline()
-                while line != '':
+                while line != "":
 
                     ## Skip commented out lines
-                    if line[0] == ';':
+                    if line[0] == ";":
                         line = f.readline()
                         continue
 
@@ -535,21 +556,21 @@ class USBHub:
                             value = int(value)
                         except ValueError:
                             stdout("Error in unpacking key {}".format(key))
-                            pass 
+                            pass
 
                     stdout("  ", key, "=", value)
                     self.config[key] = value
-                    
+
                     line = f.readline()
         except OSError:
             stdout("Default configuration")
 
     def _save_config_to_ini(self):
         import storage
-        
+
         ## If MCU is mounted on a host, this call will fail
         ## and we report the error via returning False (0) to the caller.
-        ## 
+        ##
         ## CircuitPython 5.2.0 or greater is needed for this process to work.
         try:
             storage.remount("/", readonly=False)
@@ -559,14 +580,14 @@ class USBHub:
             stdout(e)
             return 0
 
-        with open("/config.ini", 'w') as f:
+        with open("/config.ini", "w") as f:
             for key, value in self.config.items():
                 if key in _FLOAT_KEYS:
                     value = round(value * _FLOAT_SCALE)
                 elif key not in _STRING_KEYS:
                     value = int(value)
                 f.write(key + " = " + str(value) + "\r\n")
-        
+
         stdout("INI file written")
 
         storage.remount("/", readonly=True)
@@ -587,11 +608,11 @@ class USBHub:
         if crc == buf[3]:
 
             ## Clear the register so the host knows we got the request
-            self._write_register(_RMT_READ, [0,0,0,0])
+            self._write_register(_RMT_READ, [0, 0, 0, 0])
 
             ## Parse request and pass to caller
-            cmd   = buf[0] >> 5
-            name  = buf[0] & 0b11111
+            cmd = buf[0] >> 5
+            name = buf[0] & 0b11111
             value = buf[1] << 8 | buf[2]
             return cmd, name, value
 
@@ -603,10 +624,10 @@ class USBHub:
         if name == _CFG_DATA_STATE:
             value = self._read_mcp_register(_GPIO)
         elif name == _CFG_POWER_MEASURE_12:
-            data = self.power_measure(ports=[1,2], raw=True, total=False)
+            data = self.power_measure(ports=[1, 2], raw=True, total=False)
             value = data[0] + (data[1] << 8)
         elif name == _CFG_POWER_MEASURE_34:
-            data = self.power_measure(ports=[3,4], raw=True, total=False)
+            data = self.power_measure(ports=[3, 4], raw=True, total=False)
             value = data[0] + (data[1] << 8)
         elif name == _CFG_POWER_LIMITS:
             data = self.ucs.get_power_limits()
@@ -653,13 +674,15 @@ class USBHub:
         self.set_memory(_CMD_SET, name, value)
 
     def setup_host_comms(self):
-        self._write_register(_RMT_IDENT, [__version__] + list(sys.implementation.version))
+        self._write_register(
+            _RMT_IDENT, [__version__] + list(sys.implementation.version)
+        )
 
     def poll_for_host_comms(self):
         poll_time = time.monotonic()
 
         cmd, name, value = self.get_memory()
-        
+
         if cmd == _CMD_GET:
             self._process_host_get(name)
 
@@ -667,7 +690,7 @@ class USBHub:
             self._process_host_set(name, value)
 
         elif cmd == _CMD_RESET:
-            
+
             if value == _CMD_RESET_USB:
                 stdout("Host resetting USB IC")
                 self.reset()
@@ -689,15 +712,15 @@ class USBHub:
 
         if self._last_poll_time is not None and self.config["reset_on_delay"]:
             if poll_time - self._last_poll_time > self.config["loop_delay"] * 10:
-                ## Still need to reset history, otherwise RuntimeError will be 
+                ## Still need to reset history, otherwise RuntimeError will be
                 ## continously raised once the first delay occurs.
                 self._last_poll_time = poll_time
-                raise RuntimeError("Excessive loop delay") 
+                raise RuntimeError("Excessive loop delay")
 
         self._last_poll_time = poll_time
 
     def set_last_poll_time(self, poll_time):
-        self._last_poll_time = poll_time        
+        self._last_poll_time = poll_time
 
     def set_port_swap(self, values=[False, False, False, False, False]):
         value = 0
@@ -709,29 +732,37 @@ class USBHub:
         self._write_register(_PORT_SWAP, [value])
 
     def set_hub_control(self, lpm_disable=False, reset=False):
-        value = lpm_disable << 1 | \
-                reset
+        value = lpm_disable << 1 | reset
 
         self._write_register(_HUB_CTRL, [value])
 
-    def set_hub_config_1(self, self_powered=True, vsm_disable=False, highspeed_disable=False, multitt_enable=False, 
-                                eop_disable=False, individual_current_sense=True, individual_port_power=True):
+    def set_hub_config_1(
+        self,
+        self_powered=True,
+        vsm_disable=False,
+        highspeed_disable=False,
+        multitt_enable=False,
+        eop_disable=False,
+        individual_current_sense=True,
+        individual_port_power=True,
+    ):
 
         ## individual_current_sense : 0 -> ganged sensing, 1 -> individual, 2 or 3 -> current sense not supported
 
-        value = self_powered << 7 | \
-                vsm_disable << 6 | \
-                highspeed_disable << 5 | \
-                multitt_enable << 4 | \
-                eop_disable << 3 | \
-                individual_current_sense << 1 | \
-                individual_port_power
+        value = (
+            self_powered << 7
+            | vsm_disable << 6
+            | highspeed_disable << 5
+            | multitt_enable << 4
+            | eop_disable << 3
+            | individual_current_sense << 1
+            | individual_port_power
+        )
 
         self._write_register(_HUB_CONFIG_1, [value])
 
     def set_hub_config_3(self, port_map_enable=True, string_descriptor_enable=False):
-        value = port_map_enable << 3 | \
-                string_descriptor_enable
+        value = port_map_enable << 3 | string_descriptor_enable
 
         self._write_register(_HUB_CONFIG_3, [value])
 
@@ -741,25 +772,31 @@ class USBHub:
         return _utf16le_to_string(value[2:])
 
     def set_hub_descriptors(self):
-        
+
         ## Set the manufacturer name
         string_data = _string_to_utf16le(_MANUF_STRING)
-        data = [len(string_data)+2, 0x03] + string_data
+        data = [len(string_data) + 2, 0x03] + string_data
         self._write_register(_MANUF_DESC, data, do_register_length_check=False)
-        self._write_register(_MANUF_DESC_LEN, [len(string_data)+2])
+        self._write_register(_MANUF_DESC_LEN, [len(string_data) + 2])
 
         if self.config["descriptor_config"] == _DESCRIPTOR_CUSTOM:
             product_string = self.config["descriptor_custom"]
         elif self.config["descriptor_config"] == _DESCRIPTOR_MPN_REV:
             product_string = self.eeprom.sku + "." + str(self.unit_revision)
-        else: 
-            product_string = self.eeprom.sku + "." + str(self.unit_revision) + " " + self.eeprom.serial
+        else:
+            product_string = (
+                self.eeprom.sku
+                + "."
+                + str(self.unit_revision)
+                + " "
+                + self.eeprom.serial
+            )
 
         ## Set the product name based on the EEPROM data / data from config file
         string_data = _string_to_utf16le(product_string)
-        data = [len(string_data)+2, 0x03] + string_data
+        data = [len(string_data) + 2, 0x03] + string_data
         self._write_register(_PRODUCT_DESC, data, do_register_length_check=False)
-        self._write_register(_PRODUCT_DESC_LEN, [len(string_data)+2])
+        self._write_register(_PRODUCT_DESC_LEN, [len(string_data) + 2])
 
     def set_device_id(self):
         self._write_register(_DEVICE_ID, [self.unit_revision, ord("C")])
@@ -773,7 +810,15 @@ class USBHub:
         self._write_register(_REMAP_12, [port12])
         self._write_register(_REMAP_34, [port34])
 
-    def set_charging_config(self, ports=[1,2,3,4], ucs_lim=0b11, enable=True, dcp=True, se1=0b00, china_mode=False):
+    def set_charging_config(
+        self,
+        ports=[1, 2, 3, 4],
+        ucs_lim=0b11,
+        enable=True,
+        dcp=True,
+        se1=0b00,
+        china_mode=False,
+    ):
 
         ## ucs_lim : When controlling UCS through I2C, this sets the current limit.
         ## 0b00 : 500 mA
@@ -782,13 +827,13 @@ class USBHub:
         ## 0b11 : 2000 mA
 
         ## 'dcp' is Dedicated Charging Mode.  Ignored if china_mode is enabled.
-        ## This mode only active when a USB Host is not present.  When a host is 
+        ## This mode only active when a USB Host is not present.  When a host is
         ## present, CDP mode is used.
 
-        ## Bit 1 & 2 are SE1. Enables SE1 charging mode for certain devices. 
-        ## This mode is only activated when a USB host is not present. When a 
-        ## host is present, the mode of operation is CDP. When SE1 mode and DCP 
-        ## mode are both enabled, the hub toggles between the two modes of 
+        ## Bit 1 & 2 are SE1. Enables SE1 charging mode for certain devices.
+        ## This mode is only activated when a USB host is not present. When a
+        ## host is present, the mode of operation is CDP. When SE1 mode and DCP
+        ## mode are both enabled, the hub toggles between the two modes of
         ## operation as necessary to ensure the device can charge.
         ##
         ## 0b00 : Mode Disabled
@@ -796,36 +841,40 @@ class USBHub:
         ## 0b10 : 2A mode (D-: 2.0V, D+: 2.7V)
         ## 0b11 : 2.5A mode enabled (D-: 2.7V, D+: 2.7V)
 
-        ## Bit 0 is Battery Charging Support Enable. This bit enables CDP and 
-        ## must be set for any battery charging functions to be enabled. Other 
-        ## functions in addi- tion to CDP are enabled by setting their 
+        ## Bit 0 is Battery Charging Support Enable. This bit enables CDP and
+        ## must be set for any battery charging functions to be enabled. Other
+        ## functions in addi- tion to CDP are enabled by setting their
         ## respective bits in addition to this bit.
 
-        value = (ucs_lim & 0b11) << 6 | \
-                dcp << 5 | \
-                china_mode << 4 | \
-                (se1 & 0b11) << 1 | \
-                enable 
+        value = (
+            (ucs_lim & 0b11) << 6
+            | dcp << 5
+            | china_mode << 4
+            | (se1 & 0b11) << 1
+            | enable
+        )
 
         for port in ports:
             ## Register address is based on the port number
-            self._write_register(_CHARGE_CONFIG+port-1, [value])
+            self._write_register(_CHARGE_CONFIG + port - 1, [value])
 
     def set_mcp_config(self, inputs=[False, False, False, False]):
         """Set direction on MCP IO pins.  'inputs' list will set GP0 thru GP4 to inputs, if respective position is true"""
 
         ## Bits 7 thru 4 control USB data enables on downstream ports 1 thru 4, respectively.
         ## They must be set to 0 to make them outputs.
-        value = 0b00000000 | \
-                inputs[3] << 3 | \
-                inputs[2] << 2 | \
-                inputs[1] << 1 | \
-                inputs[0]
+        value = (
+            0b00000000 | inputs[3] << 3 | inputs[2] << 2 | inputs[1] << 1 | inputs[0]
+        )
 
         with self.mcp_device as i2c:
             ## Write to IODIR register and defaults to other registers.
             ## 0x09 (GPIO) register has to be 0b0000_0000 so that downstream ports default to enabled
-            i2c.write(bytearray([0x00, value, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]))
+            i2c.write(
+                bytearray(
+                    [0x00, value, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
+                )
+            )
 
     def _read_mcp_register(self, addr, max_attempts=5):
 
@@ -835,13 +884,15 @@ class USBHub:
             try:
                 with self.mcp_device as i2c:
                     self._BUFFER[0] = addr
-                    i2c.write_then_readinto(self._BUFFER, self._BUFFER, out_end=1, in_end=1)
+                    i2c.write_then_readinto(
+                        self._BUFFER, self._BUFFER, out_end=1, in_end=1
+                    )
                 break
             except OSError:
                 time.sleep(0.01)
                 if attempts >= max_attempts:
                     return None
-        
+
         return self._BUFFER[0]
 
     def _write_mcp_register(self, addr, value, max_attempts=5):
@@ -859,7 +910,7 @@ class USBHub:
                 time.sleep(0.01)
                 if attempts >= max_attempts:
                     return None
-        
+
         return self._BUFFER[1]
 
     def data_state(self):
@@ -868,16 +919,23 @@ class USBHub:
         if value is None:
             return None
 
-        return [not get_bit(value, 7), not get_bit(value, 6), not get_bit(value, 5), not get_bit(value, 4)]
+        return [
+            not get_bit(value, 7),
+            not get_bit(value, 6),
+            not get_bit(value, 5),
+            not get_bit(value, 4),
+        ]
 
     def data_enable(self, ports=[]):
 
         with self.mcp_device as i2c:
             self._BUFFER[0] = _GPIO
-            i2c.write_then_readinto(self._BUFFER, self._BUFFER, out_end=1, in_start=1, in_end=2)
+            i2c.write_then_readinto(
+                self._BUFFER, self._BUFFER, out_end=1, in_start=1, in_end=2
+            )
 
             for port in ports:
-                self._BUFFER[1] = clear_bit(self._BUFFER[1], 8-port)
+                self._BUFFER[1] = clear_bit(self._BUFFER[1], 8 - port)
 
             i2c.write(self._BUFFER, end=2)
 
@@ -886,38 +944,48 @@ class USBHub:
 
         with self.mcp_device as i2c:
             self._BUFFER[0] = _GPIO
-            i2c.write_then_readinto(self._BUFFER, self._BUFFER, out_end=1, in_start=1, in_end=2)
+            i2c.write_then_readinto(
+                self._BUFFER, self._BUFFER, out_end=1, in_start=1, in_end=2
+            )
 
             for port in ports:
-                self._BUFFER[1] = set_bit(self._BUFFER[1], 8-port)
+                self._BUFFER[1] = set_bit(self._BUFFER[1], 8 - port)
 
             i2c.write(self._BUFFER, end=2)
-
 
     def get_port_remap(self):
         port12 = _bytearry_to_int(self._read_register(_REMAP_12))
         port34 = _bytearry_to_int(self._read_register(_REMAP_34))
 
-        return [port12 & 0x0F, (port12 >> 4) & 0x0F, port34 & 0x0F, (port34 >> 4) & 0x0F]
+        return [
+            port12 & 0x0F,
+            (port12 >> 4) & 0x0F,
+            port34 & 0x0F,
+            (port34 >> 4) & 0x0F,
+        ]
 
     def power_control_register(self, port):
         if self._power_control_registers is None:
             # Interconnect between Hub IC power control pins and downstream power control devices
-            # changed between REV 1 and REV 2. Therefore, we have to look at the hardware revision 
-            # to know which register controls which physical port (even though the logical data 
+            # changed between REV 1 and REV 2. Therefore, we have to look at the hardware revision
+            # to know which register controls which physical port (even though the logical data
             # connection to the Hub IC did not change between REV 1 and REV 2)
             if self.unit_revision >= 2:
-                self._power_control_registers = [_POWER_SELECT_1+(port-1)*4 for port in [3,1,4,2]]
+                self._power_control_registers = [
+                    _POWER_SELECT_1 + (port - 1) * 4 for port in [3, 1, 4, 2]
+                ]
             else:
-                self._power_control_registers = [_POWER_SELECT_1+(port-1)*4 for port in [1,2,3,4]]
+                self._power_control_registers = [
+                    _POWER_SELECT_1 + (port - 1) * 4 for port in [1, 2, 3, 4]
+                ]
 
         return self._power_control_registers[port]
 
-    def power_state(self, ports=[1,2,3,4]):
+    def power_state(self, ports=[1, 2, 3, 4]):
         out = []
 
         for port in ports:
-            data = self._read_register(self.power_control_register(port-1))[0]
+            data = self._read_register(self.power_control_register(port - 1))[0]
 
             ## Bits 3:0 mapping:
             ##  0b000 : Port power is disabled
@@ -933,13 +1001,13 @@ class USBHub:
 
     def power_disable(self, ports=[]):
         for port in ports:
-            self._write_register(_POWER_SELECT_1+(port-1)*4, [0x80])
+            self._write_register(_POWER_SELECT_1 + (port - 1) * 4, [0x80])
 
     def power_enable(self, ports=[]):
         for port in ports:
-            self._write_register(_POWER_SELECT_1+(port-1)*4, [0x81])
+            self._write_register(_POWER_SELECT_1 + (port - 1) * 4, [0x81])
 
-    def power_measure(self, ports=[1,2,3,4], total=True, raw=False, rescale=0):
+    def power_measure(self, ports=[1, 2, 3, 4], total=True, raw=False, rescale=0):
         return self.ucs.currents(ports=ports, total=total, raw=raw, rescale=rescale)
 
     def power_errors(self):
@@ -950,12 +1018,11 @@ class USBHub:
         vlim, vlogic = None, None
 
         if self.vlim is not None:
-            voltage = float(self.vlim.value) / 65535.0 * self.vlim.reference_voltage 
+            voltage = float(self.vlim.value) / 65535.0 * self.vlim.reference_voltage
             vlim = voltage * (1870 + 20000) / 1870
-        
+
         if self.vlogic is not None:
-            voltage = float(self.vlogic.value) / 65535.0 * self.vlogic.reference_voltage 
+            voltage = float(self.vlogic.value) / 65535.0 * self.vlogic.reference_voltage
             vlogic = voltage * 2
 
         return vlim, vlogic
-        

@@ -32,13 +32,15 @@ LED_BRIGHT = 80
 
 DISTANCE_READ_INTERVAL_S = 1
 
+
 def stdout(*args):
     if supervisor.runtime.serial_connected:
         print(*args)
 
+
 stdout("... booted ...")
 
-i2c1 = busio.I2C(board.SCL,  board.SDA)
+i2c1 = busio.I2C(board.SCL, board.SDA)
 i2c2 = busio.I2C(board.SCL2, board.SDA2)
 
 
@@ -54,7 +56,7 @@ def initialize_distance_sensor():
         distance_failures = 0
         distance_failure_blink_state = True
     except:
-        stdout('Failed to initialize distance sensor')
+        stdout("Failed to initialize distance sensor")
 
 
 distance_sensor = None  # type: Union[adafruit_vl53l0x.VL53L0X, None]
@@ -68,8 +70,8 @@ stdout("... configuring hub ...")
 usb = capablerobot_usbhub.USBHub(i2c1, i2c2)
 
 stdout("... configuring leds ...")
-BRIGHT   = 20
-led_pwr  = capablerobot_tlc59116.TLC59116(i2c1, 0x61, pwm=BRIGHT)
+BRIGHT = 20
+led_pwr = capablerobot_tlc59116.TLC59116(i2c1, 0x61, pwm=BRIGHT)
 led_data = capablerobot_tlc59116.TLC59116(i2c1, 0x62, pwm=BRIGHT)
 
 stdout()
@@ -78,7 +80,7 @@ stdout("Revision : %s" % usb.unit_revision)
 stdout("  Serial : %s" % usb.unit_serial)
 stdout()
 
-upstream_state = 'reset'
+upstream_state = "reset"
 upstream_last_time = boot_time
 
 
@@ -90,26 +92,27 @@ def reset():
     usb.set_mcp_config()
 
     ## Light the host data LED orange to show the reset is occuring
-    led_data.rgb(0, (LED_BRIGHT,int(LED_BRIGHT/2),0), update=True)
+    led_data.rgb(0, (LED_BRIGHT, int(LED_BRIGHT / 2), 0), update=True)
     time.sleep(0.5)
 
     ## Reset the upstream timeout to ensure that the next
     ## reset can only occurs after the specified timeout
-    upstream_state = 'reset'
+    upstream_state = "reset"
     upstream_last_time = time.monotonic()
 
     usb.set_last_poll_time(time.monotonic())
+
 
 while True:
     if time.monotonic() > distance_last_time + DISTANCE_READ_INTERVAL_S:
         try:
             distance_cm = int(round(distance_sensor.range / 10))
-            stdout('Distance: {}cm'.format(distance_cm))
+            stdout("Distance: {}cm".format(distance_cm))
             distance_last_time = time.monotonic()
         except:
             distance_failures += 1
             if distance_failures == 3 or distance_failures % 10 == 0:
-                stdout('Re-initializing distance sensor')
+                stdout("Re-initializing distance sensor")
                 initialize_distance_sensor()
 
     time.sleep(usb.config["loop_delay"])
@@ -135,7 +138,6 @@ while True:
         ## we still need to turn it off when the next update happens.
         led_data.aux(0, update=False)
 
-
     data_state = usb.data_state()
 
     if data_state is None:
@@ -143,27 +145,27 @@ while True:
 
     ## Set the data LEDs based on the detected per-port speeds
     for idx, speed in enumerate(usb.speeds):
-        color = (0,0,0)
+        color = (0, 0, 0)
 
-        if idx > 0 and data_state[idx-1] == False:
+        if idx > 0 and data_state[idx - 1] == False:
             ## If port data is disabled, light the LED orange
-            color = (LED_BRIGHT,int(LED_BRIGHT/2),0)
+            color = (LED_BRIGHT, int(LED_BRIGHT / 2), 0)
         elif speed == 0b01:
-            color = (0,0,LED_BRIGHT)
+            color = (0, 0, LED_BRIGHT)
         elif speed == 0b10:
-            color = (0,LED_BRIGHT,0)
+            color = (0, LED_BRIGHT, 0)
         elif speed == 0b11:
-            color = (LED_BRIGHT,LED_BRIGHT,LED_BRIGHT)
+            color = (LED_BRIGHT, LED_BRIGHT, LED_BRIGHT)
 
         if idx == 0:
             if speed == 0b00:
                 ## If the upstream port is disconnected, light the
                 ## LED red and record that the link is down
-                color = (LED_BRIGHT,0,0)
-                upstream_state = 'down'
+                color = (LED_BRIGHT, 0, 0)
+                upstream_state = "down"
             else:
                 upstream_last_time = time.monotonic()
-                upstream_state = 'up'
+                upstream_state = "up"
 
             if distance_failures > 0:
                 if distance_failures % 10 == 0:
@@ -190,29 +192,26 @@ while True:
             current == 255
 
         if idx == 0:
-            color = (0,0,int(current/4))
+            color = (0, 0, int(current / 4))
         else:
-            if power_state[idx-1] == False:
+            if power_state[idx - 1] == False:
                 ## If port power is disabled, light the LED orange
-                color = (LED_BRIGHT,int(LED_BRIGHT/2),0)
-            elif "ERR" in ucs_status[idx-1] or "ALERT" in ucs_status[idx-1]:
+                color = (LED_BRIGHT, int(LED_BRIGHT / 2), 0)
+            elif "ERR" in ucs_status[idx - 1] or "ALERT" in ucs_status[idx - 1]:
                 ## UCS is reporting an alert, light the LED red
-                color = (LED_BRIGHT,0,0)
-            elif "CC" in ucs_status[idx-1]:
+                color = (LED_BRIGHT, 0, 0)
+            elif "CC" in ucs_status[idx - 1]:
                 ## UCS is reporting constant current mode, light the LED green
-                color = (0,LED_BRIGHT,0)
+                color = (0, LED_BRIGHT, 0)
             else:
                 ## Otherwise, light blue with intensity based on measured power draw
-                color = (0,0,current)
+                color = (0, 0, current)
 
         led_pwr.rgb(idx, color, update=False)
 
     led_pwr.update()
 
-    if usb.config['reset_on_link_loss'] and upstream_state == 'down':
-        if time.monotonic() - upstream_last_time > usb.config['link_loss_delay']:
+    if usb.config["reset_on_link_loss"] and upstream_state == "down":
+        if time.monotonic() - upstream_last_time > usb.config["link_loss_delay"]:
             stdout("--- RESET DUE TO LINK LOSS ---")
             reset()
-
-
-

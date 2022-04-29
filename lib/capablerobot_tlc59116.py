@@ -25,29 +25,29 @@ from micropython import const
 from adafruit_bus_device.i2c_device import I2CDevice
 
 # pylint: disable=bad-whitespace
-_CONTROL    = const(0x80)
-_AUTOINCR   = const(0xA2)
+_CONTROL = const(0x80)
+_AUTOINCR = const(0xA2)
 
-_NUM_LEDS   = const(16)
+_NUM_LEDS = const(16)
 # pylint: enable=bad-whitespace
 
-class TLC59116:
 
+class TLC59116:
     def __init__(self, i2c_bus, addr, **kwargs):
         self.i2c_device = I2CDevice(i2c_bus, addr)
-        self.state = [0]*_NUM_LEDS
+        self.state = [0] * _NUM_LEDS
         self.configure(**kwargs)
 
     def _write_register(self, address, xbytes, max_attempts=5):
         ## Ensure that payload doesn't overflow byte boundry
-        xbytes = [min(255,v) for v in xbytes]
-        
+        xbytes = [min(255, v) for v in xbytes]
+
         attempts = 0
         while attempts < max_attempts:
             attempts += 1
             try:
                 with self.i2c_device as i2c:
-                    i2c.write(bytearray([address]+xbytes))
+                    i2c.write(bytearray([address] + xbytes))
                 return True
             except OSError:
                 time.sleep(0.01)
@@ -55,29 +55,35 @@ class TLC59116:
                     return False
 
     # pylint: disable=too-many-arguments
-    def configure(self,
-                  auto_increment=True,
-                  allcall=True,
-                  osc_off=False,
-                  pwm=0xA0, freq=0,
-                  sub1=False, sub2=False, sub3=False,
-                  change_on_ack=False, clear_errors=False, group_blink=False):
+    def configure(
+        self,
+        auto_increment=True,
+        allcall=True,
+        osc_off=False,
+        pwm=0xA0,
+        freq=0,
+        sub1=False,
+        sub2=False,
+        sub3=False,
+        change_on_ack=False,
+        clear_errors=False,
+        group_blink=False,
+    ):
 
         data = []
 
         ## Configure MODE1 register
-        data += [auto_increment << 7 | \
-                 osc_off << 4 | \
-                 sub1 << 3 | \
-                 sub2 << 2 | \
-                 sub3 << 1 | \
-                 allcall]
+        data += [
+            auto_increment << 7
+            | osc_off << 4
+            | sub1 << 3
+            | sub2 << 2
+            | sub3 << 1
+            | allcall
+        ]
 
         ## Configure MODE2 register
-        data += [clear_errors << 7 | \
-                 group_blink << 5 | \
-                 change_on_ack << 3]
-
+        data += [clear_errors << 7 | group_blink << 5 | change_on_ack << 3]
 
         data += self.state
         data += [pwm, freq]
@@ -91,7 +97,7 @@ class TLC59116:
         self._write_register(_CONTROL, data)
 
     def off(self):
-        self.state = [0]*_NUM_LEDS
+        self.state = [0] * _NUM_LEDS
         return self.update()
 
     def aux(self, value, update=True):
@@ -104,13 +110,13 @@ class TLC59116:
         if channel == 0:
             idx = 0
         else:
-            idx = 15 - channel*3
+            idx = 15 - channel * 3
 
         rgb = list(rgb)
 
-        self.state[idx+0] = rgb[0]
-        self.state[idx+1] = rgb[1]
-        self.state[idx+2] = rgb[2]
+        self.state[idx + 0] = rgb[0]
+        self.state[idx + 1] = rgb[1]
+        self.state[idx + 2] = rgb[2]
 
         if update:
             return self.update()

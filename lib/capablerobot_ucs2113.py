@@ -25,28 +25,31 @@ import adafruit_bus_device.i2c_device as i2c_device
 
 _REG_PORT1_CURRENT = const(0x00)
 _REG_PORT2_CURRENT = const(0x01)
-_REG_PORT_STATUS   = const(0x02)
-_REG_INTERRUPT1    = const(0x03)
-_REG_INTERRUPT2    = const(0x04)
+_REG_PORT_STATUS = const(0x02)
+_REG_INTERRUPT1 = const(0x03)
+_REG_INTERRUPT2 = const(0x04)
 _REG_CURRENT_LIMIT = const(0x14)
 _REG_AUTO_RECOVERY = const(0x15)
-_REG_OC_BEHAVIOR1  = const(0x23)
-_REG_OC_BEHAVIOR2  = const(0x24)
+_REG_OC_BEHAVIOR1 = const(0x23)
+_REG_OC_BEHAVIOR2 = const(0x24)
 
 
 _MA_PER_BIT = 13.3
 
+
 def set_bit(value, bit):
-    return value | (1<<bit)
+    return value | (1 << bit)
+
 
 def clear_bit(value, bit):
-    return value & ~(1<<bit)
+    return value & ~(1 << bit)
+
 
 def get_bit(value, bit):
-    return (value & (1<<bit)) > 0
+    return (value & (1 << bit)) > 0
+
 
 class UCS2113:
-
     def __init__(self, i2c, address=0x57, filter_threshold=5, filter_length=8):
         self.i2c_device = i2c_device.I2CDevice(i2c, address)
         self._buffer = bytearray(3)
@@ -59,14 +62,14 @@ class UCS2113:
 
     def _write_register(self, address, xbytes, max_attempts=5):
         ## Ensure that payload doesn't overflow byte boundry
-        xbytes = [min(255,v) for v in xbytes]
-        
+        xbytes = [min(255, v) for v in xbytes]
+
         attempts = 0
         while attempts < max_attempts:
             attempts += 1
             try:
                 with self.i2c_device as i2c:
-                    i2c.write(bytearray([address]+xbytes))
+                    i2c.write(bytearray([address] + xbytes))
                 return True
             except OSError:
                 time.sleep(0.01)
@@ -115,10 +118,10 @@ class UCS2113:
                 return []
 
             value = int(self._buffer[0])
-            
+
             self._ch1_history.pop(0)
             self._ch1_history.append(value)
-            
+
             if filtered and value < self._filter_threshold:
                 filter_mean = sum(self._ch1_history) / self._filter_length
                 out.append(filter_mean)
@@ -157,7 +160,7 @@ class UCS2113:
 
         out = [
             self.decode_interrupt_register(self._buffer[1]),
-            self.decode_interrupt_register(self._buffer[2])
+            self.decode_interrupt_register(self._buffer[2]),
         ]
 
         if get_bit(value, 4):
@@ -217,9 +220,7 @@ class UCS2113:
         return out
 
 
-
 class Ports:
-
     def __init__(self, i2c):
         self.ch12 = UCS2113(i2c, address=0x57)
         self.ch34 = UCS2113(i2c, address=0x56)
@@ -243,7 +244,7 @@ class Ports:
         self.ch12.set_power_limits(port12)
         self.ch34.set_power_limits(port34)
 
-    def currents(self, ports=[1,2,3,4], total=True, raw=False, rescale=0):
+    def currents(self, ports=[1, 2, 3, 4], total=True, raw=False, rescale=0):
         out = []
 
         one = 1 in ports

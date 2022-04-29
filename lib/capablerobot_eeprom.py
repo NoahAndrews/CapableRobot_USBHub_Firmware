@@ -24,24 +24,28 @@ from adafruit_bus_device.i2c_device import I2CDevice
 
 ## Array of default addr, pages bytes per page, location of EUI
 EEPROMS = {}
-EEPROMS['24AA02E48']  = [0x50,  8, 32,  8, (0xFA, 0xFF)]
-EEPROMS['24AA025E48'] = [0x50,  8, 16, 16, (0xFA, 0xFF)]
-EEPROMS['24AA02E64']  = [0x50,  8, 32,  8, (0xF8, 0xFF)]
-EEPROMS['24AA025E64'] = [0x50,  8, 16, 16, (0xF8, 0xFF)]
+EEPROMS["24AA02E48"] = [0x50, 8, 32, 8, (0xFA, 0xFF)]
+EEPROMS["24AA025E48"] = [0x50, 8, 16, 16, (0xFA, 0xFF)]
+EEPROMS["24AA02E64"] = [0x50, 8, 32, 8, (0xF8, 0xFF)]
+EEPROMS["24AA025E64"] = [0x50, 8, 16, 16, (0xF8, 0xFF)]
+
 
 def bytearry_to_ints(b):
     return [char for char in b]
 
+
 def _memaddr_to_buf(address):
     if address > 255:
-        raise ValueError("Library does not support memory addresses greater than one byte")
+        raise ValueError(
+            "Library does not support memory addresses greater than one byte"
+        )
 
     return bytearray([address])
 
-class EEPROM:
 
+class EEPROM:
     def __init__(self, i2c_bus, name, addr=None):
-        
+
         if addr is None:
             self.addr = EEPROMS[name][0]
         else:
@@ -71,18 +75,18 @@ class EEPROM:
     def write(self, mem_addr, buf):
         """Write one or more bytes to the EEPROM starting from a specific address"""
         with self.i2c_device as i2c:
-            i2c.write(_memaddr_to_buf(mem_addr)+bytearray(buf))
-        
+            i2c.write(_memaddr_to_buf(mem_addr) + bytearray(buf))
+
     @property
     def eui(self, string=True):
         addr = list(self.eui_addr)
-        data = bytearry_to_ints(self.read(addr[0], addr[1]-addr[0]+1))
-        
+        data = bytearry_to_ints(self.read(addr[0], addr[1] - addr[0] + 1))
+
         if len(data) == 6:
             data = data[0:3] + [0xFF, 0xFE] + data[3:6]
 
         if string:
-            return ''.join(["%0.2X" % v for v in data])
+            return "".join(["%0.2X" % v for v in data])
 
         return data
 
@@ -97,9 +101,9 @@ class EEPROM:
         ## Prototype units didn't have the PCB SKU programmed into the EEPROM
         ## If EEPROM location is empty, we assume we're interacting with that hardware
         if data[0] == 0 or data[0] == 255:
-            return 'CRR3C4'
+            return "CRR3C4"
 
-        return ''.join([chr(v) for v in data])
+        return "".join([chr(v) for v in data])
 
     @property
     def revision(self):
