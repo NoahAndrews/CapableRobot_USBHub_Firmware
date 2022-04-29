@@ -70,6 +70,8 @@ distance_mm = 0
 distance_last_time = 0
 distance_failures = 0
 distance_failure_blink_state = True
+# TODO(Noah): Expose desk_state via USB (See
+#  http://ww1.microchip.com/downloads/en/Appnotes/AN2651-Configuration-of-Microchip-USB47xx-USB49xx-Application-Note-00002651B.pdf)
 desk_state = DESK_UNKNOWN
 initialize_distance_sensor()
 
