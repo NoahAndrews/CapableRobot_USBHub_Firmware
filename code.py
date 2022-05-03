@@ -128,7 +128,7 @@ while True:
             prev_desk_state = desk_state
             distance_mm = int(round(distance_sensor.range))
             distance_last_time = time.monotonic()
-            if 80 <= distance_mm <= 90:
+            if 80 <= distance_mm <= 95:
                 desk_state = DESK_LOWERED
             elif 160 <= distance_mm <= 200:
                 desk_state = DESK_RAISED
