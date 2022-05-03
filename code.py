@@ -77,6 +77,7 @@ distance_failure_blink_state = True
 
 # TODO(Noah): Expose desk_state by writing it to the EEPROM
 desk_state = DESK_UNKNOWN
+desk_state_became_unknown_time = 0
 desk_raised_last_time = time.monotonic()
 desk_blink_state = False
 desk_blink_state_loop_cycles = 0
@@ -129,11 +130,18 @@ while True:
             distance_last_time = time.monotonic()
             if 80 <= distance_mm <= 95:
                 desk_state = DESK_LOWERED
+                desk_state_became_unknown_time = 0
             elif 160 <= distance_mm <= 200:
                 desk_state = DESK_RAISED
+                desk_state_became_unknown_time = 0
                 desk_raised_last_time = time.monotonic()
             else:
-                desk_state = DESK_UNKNOWN
+                # If the state has been unknown for the past 30 seconds, record it as unknown
+                # The 30-second requirement prevents the state becoming unknown while the desk is being moved
+                if desk_state_became_unknown_time == 0:
+                    desk_state_became_unknown_time = time.monotonic()
+                elif time.monotonic() - desk_state_became_unknown_time > 30:
+                    desk_state = DESK_UNKNOWN
 
             if prev_desk_state is not desk_state:
                 stdout("Desk state: {}".format(desk_state))
